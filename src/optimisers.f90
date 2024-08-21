@@ -89,7 +89,7 @@ module mod_Optimisers
 
    public :: optimisationSettings
 
-   public :: Optimise_SA, Optimise_GA
+   public :: Optimise_SA, Optimise_GA, Optimise_ES
 
 contains
 
@@ -233,6 +233,70 @@ contains
       return
 
    end subroutine Optimise_GA
+
+   !*******************************************************************
+   !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine Optimise_ES()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Basic evolutionary strategy, of the (mu+lambda) type. No 
+   !>  recombination based on this. 
+   !>
+   !>  Key settings in the optimisation derived type for ES are:
+   !>
+   !>       lBoundI, uBoundI -- the upper and lower initialisation values
+   !>       lBound, uBound -- the upper and lower allowable values
+   !>
+   !>       nPrint -- the number of iterations after which to print
+   !>
+   !>  @param[in]   fitnessFunc -- the function which tests the fitness
+   !>  @param[in]   nDims       -- the number of input parameters
+   !>  @param[in]   settings    -- the optimisation settings derived type
+   !>  @param[out]  xOpt        -- the optimised values for return
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine Optimise_ES(fitnessFunc, nDims, settings, xOpt)
+
+      ! Use the relevant optimiser module
+
+      use mod_optES
+
+      ! Turn off implicit typing
+
+      implicit none
+
+      ! Declare external variables
+
+      procedure(optimiseFunction) :: fitnessFunc
+
+      integer(kind=WI), intent(in) :: nDims
+
+      type(optimisationSettings) :: settings
+
+      real   (kind=WP), intent(out) :: xOpt(nDims)
+
+      ! Unpack the options, and call the simulated annealing module
+
+      call opt_runES(fitnessFunc, nDims, &
+                     settings%lBound, settings%uBound, &
+                     settings%lBoundI, settings%uBoundI, &
+                     settings%nPrint, &
+                     xOpt)
+
+      ! Return to calling program
+
+      return
+
+   end subroutine Optimise_ES
 
    !*******************************************************************
    !*******************************************************************

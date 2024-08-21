@@ -82,7 +82,7 @@ program OptimusPrime
    write(6,*) polycos([zero,-3.8_wp])
 
 
-   call Optimise_GA(polycos, nDims, SA_Settings, xFinal)
+   call Optimise_ES(polycos, nDims, SA_Settings, xFinal)
 
    write(6,*) xFinal
 
