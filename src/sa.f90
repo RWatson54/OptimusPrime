@@ -65,12 +65,24 @@ contains
    !>  @param[in]  nDims -- the number of dimensions
    !>  @param[in]  lBound -- the lower allowed bound
    !>  @param[in]  uBound -- the upper allowed bound
+   !>  @param[in]  lBoundI -- the lower bound used for initialisation
+   !>  @param[in]  uBoundI -- the upper bound used for initialisation
+   !>  @param[in]  innerMax -- the number of inner iterations
+   !>  @param[in]  outerMax -- the number of outer iterations
+   !>  @param[in]  nReheat -- the reheat frequency
+   !>  @param[in]  alpha -- the geometric annealing rate
+   !>  @param[in]  nPrint -- the screen output frequency
    !>  @param[out] xOpt -- the returned values
    !>
    !*******************************************************************
    !*******************************************************************
 
-   subroutine opt_runSA(fitnessFunc, nDims, lBound, uBound, xOpt)
+   subroutine opt_runSA(fitnessFunc, nDims, &
+                        lBound, uBound, lBoundI, uBoundI, &
+                        innerMax, outerMax, nReheat, &
+                        alpha, &
+                        nPrint, &
+                        xOpt)
 
       ! Turn off implicit typing
 
@@ -82,21 +94,21 @@ contains
 
       integer(kind=WI) :: nDims
 
-      real   (kind=WP) :: lBound, uBound
+      real   (kind=WP) :: lBound, uBound, lBoundI, uBoundI
 
       real   (kind=WP) :: xOpt(nDims)
 
       ! Declare internal variables
 
-      integer(kind=WI), parameter :: outerMax = 100     ! The number of outer iterations
-      integer(kind=WI), parameter :: innerMax = 500     ! The number of inner iterations
-      integer(kind=WI), parameter :: nOut = 50          ! The print output timer
-      integer(kind=WI), parameter :: nPrint = 10000     ! The file output timer
-      integer(kind=WI), parameter :: nReheat = 100      ! The reheat frequency
+      integer(kind=WI) :: outerMax     ! The number of outer iterations
+      integer(kind=WI) :: innerMax     ! The number of inner iterations
+      integer(kind=WI) :: nPrint       ! The print output timer
+      integer(kind=WI) :: nReheat      ! The reheat frequency
+
       
       integer(kind=WI), parameter :: nInitTest = 100    ! The number of initial tests to estimate T_0
 
-      real   (kind=WP) :: alpha = 0.99_wp    ! The geometric annealing rate
+      real   (kind=WP) :: alpha        ! The geometric annealing rate
 
       real   (kind=WP) :: xCurr(nDims), xBest(nDims), xI(nDims), xProp(nDims)
 
@@ -120,7 +132,7 @@ contains
 
       do iDim = 1, nDims
 
-         xCurr(iDim) = STOCHASTIC_Uniform(lBound, uBound)
+         xCurr(iDim) = STOCHASTIC_Uniform(lBoundI, uBoundI)
 
       end do
 
@@ -145,7 +157,7 @@ contains
 
          do iDim = 1, nDims
             
-            xI(iDim) = STOCHASTIC_Uniform(lBound, uBound)
+            xI(iDim) = STOCHASTIC_Uniform(lBoundI, uBoundI)
             
          end do
 
@@ -213,7 +225,7 @@ contains
 
             ! Propose a new configuration in the neighbourhood of the current
 
-            call neighbouringVector(xCurr, xProp)
+            call neighbouringVector(xCurr, lBound, uBound, xProp)
 
             ! Calculate the cost of the propose configuration
 
@@ -262,7 +274,7 @@ contains
 
             iterNum = (iOuter-1)*innerMax + iInner
 
-            if ( mod(iterNum,nOut) .eq. 0 ) then
+            if ( mod(iterNum,nPrint) .eq. 0 ) then
 
                ! Print some information to screen
 
@@ -347,18 +359,22 @@ contains
    !>  vector
    !>  
    !>  @param[in]  xIn -- the original point
+   !>  @param[in]  lBound -- the lower allowable value
+   !>  @param[in]  uBound -- the upper allowable value
    !>  @param[out] xOut -- the neighbouring point
    !>
    !*******************************************************************
    !*******************************************************************
    
-   subroutine neighbouringVector(xIn, xOut)
+   subroutine neighbouringVector(xIn, lBound, uBound, xOut)
 
       implicit none
 
       ! Declare external variables
 
       real   (kind=WP), intent(in) :: xIn(:)
+
+      real   (kind=WP), intent(in) :: lBound, uBound
 
       real   (kind=WP), intent(out) :: xOut(size(xIn,1))
 
@@ -381,6 +397,11 @@ contains
          if (rTemp .lt. 0.10_wp) then
 
             xOut(i) = xOut(i) + STOCHASTIC_Normal(zero, 0.10_wp)
+
+            ! Enforce the bounds
+
+            xOut(i) = max(lBound, xOut(i))
+            xOut(i) = min(uBound, xOut(i))
 
          end if
 

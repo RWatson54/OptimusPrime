@@ -45,7 +45,7 @@ module mod_UserFunctions
 
    ! Provide a variable which determines the size of the problem
 
-   integer(kind=WI) :: nDims = 2
+   integer(kind=WI), parameter :: nDims = 2
 
    ! Set everything private
 

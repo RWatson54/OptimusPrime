@@ -37,7 +37,7 @@
 !>  parallelise better. 
 !>
 !>  Currently implemented optimsation schemes are:
-!>       1. Basic genetic algorithm
+!>       1. Simple Simulated Annealing schedule
 !>
 !*******************************************************************
 !*******************************************************************
@@ -56,11 +56,31 @@ program OptimusPrime
 
    ! Declare program variables
 
-   real   (kind=WP) :: xA(2)
+   real   (kind=WP) :: xFinal(nDims)
 
-   call Optimise_SA(quadratic, nDims, xA)
+   type(optimisationSettings) :: SA_Settings
 
-   write(6,*) xA
+   ! Set up the key options
+
+!!$   SA_Settings%lBound = -one
+!!$   SA_Settings%uBound =  one
+!!$
+!!$   SA_Settings%lBoundI = -one
+!!$   SA_Settings%uBoundI =  one
+!!$
+!!$   SA_Settings%nInner = 10
+!!$   SA_Settings%nOuter = 50
+!!$   SA_Settings%nReheat = 50
+
+   SA_Settings%nPrint = 5
+   
+!!$   SA_Settings%alpha = 0.99_wp
+
+   ! Run the code
+
+   call Optimise_SA(quadratic, nDims, SA_Settings, xFinal)
+
+   write(6,*) xFinal
 
    ! Stop and exit cleanly
 
