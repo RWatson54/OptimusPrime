@@ -55,7 +55,7 @@ module mod_UserFunctions
 
    public :: nDims
 
-   public :: quadratic
+   public :: quadratic, polycos
 
 contains
 
@@ -98,6 +98,47 @@ contains
 
    !*******************************************************************
    !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Function polycos()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  This is a simple demonstration --- a quadratic multiplied by a 
+   !>  cosine
+   !>  
+   !>  @param[in]  x -- the input variables
+   !>  @param[out] f -- the output variables
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   function polycos(x) result(f)
+
+      implicit none
+
+      ! Declare external variables
+
+      real   (kind=WP), intent(in) :: x(:)
+      real   (kind=WP) :: f
+
+      ! And calculate the function
+      
+      f = (x(1)**2 + 2*x(2)**2 - 4) * cos(x(1)) * cos(x(2))
+
+      ! Return to calling program
+
+      return
+
+   end function polycos
+
+   !*******************************************************************
+   !*******************************************************************
+
 
 end module mod_UserFunctions
 

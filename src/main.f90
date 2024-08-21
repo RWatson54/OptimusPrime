@@ -62,13 +62,13 @@ program OptimusPrime
 
    ! Set up the key options
 
-!!$   SA_Settings%lBound = -one
-!!$   SA_Settings%uBound =  one
-!!$
-!!$   SA_Settings%lBoundI = -one
-!!$   SA_Settings%uBoundI =  one
-!!$
-!!$   SA_Settings%nInner = 10
+   SA_Settings%lBound = -4.0_wp
+   SA_Settings%uBound =  4.0_wp
+
+   SA_Settings%lBoundI = -one
+   SA_Settings%uBoundI =  one
+
+   SA_Settings%nGen = 100
 !!$   SA_Settings%nOuter = 50
 !!$   SA_Settings%nReheat = 50
 
@@ -78,9 +78,15 @@ program OptimusPrime
 
    ! Run the code
 
-   call Optimise_SA(quadratic, nDims, SA_Settings, xFinal)
+   write(6,*) polycos([zero,zero])
+   write(6,*) polycos([zero,-3.8_wp])
+
+
+   call Optimise_GA(polycos, nDims, SA_Settings, xFinal)
 
    write(6,*) xFinal
+
+   
 
    ! Stop and exit cleanly
 

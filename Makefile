@@ -32,6 +32,7 @@ EXEC_FILES = $(SRC_DIR)/precision.f90 \
              $(SRC_DIR)/interface.f90 \
              $(SRC_DIR)/userfunctions.f90 \
              $(SRC_DIR)/sa.f90 \
+             $(SRC_DIR)/ga.f90 \
              $(SRC_DIR)/optimisers.f90 \
              $(SRC_DIR)/main.f90 
 

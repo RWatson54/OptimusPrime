@@ -59,9 +59,18 @@ module mod_Optimisers
       integer(kind=WI) :: nOuter  = 50
       integer(kind=WI) :: nReheat = 25
 
+      integer(kind=WI) :: nGen = 10
+      integer(kind=WI) :: nPop = 100
+
       ! Key parameters
 
       real   (kind=WP) :: alpha = 0.99_wp
+
+      real   (kind=WP) :: pCrossover = 0.75_wp
+
+      real   (kind=WP) :: pMutate1 = 0.05_wp
+      real   (kind=WP) :: pMutate2 = 0.01_wp
+      real   (kind=WP) :: pMutate3 = 0.01_wp
 
       ! Output control
 
@@ -80,7 +89,7 @@ module mod_Optimisers
 
    public :: optimisationSettings
 
-   public :: Optimise_SA
+   public :: Optimise_SA, Optimise_GA
 
 contains
 
@@ -153,6 +162,81 @@ contains
 
    !*******************************************************************
    !*******************************************************************
+
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine Optimise_GA()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Basic genetic algorithm, operating on real strings. Baseline 
+   !>  k-point discrete recombination is built in to this version, and
+   !>  k-way tournament selection. Two mutation operators are allowed,
+   !>  drift by a small value, and total loss
+   !>  
+   !>  Key settings in the optimisation derived type for GA are:
+   !>
+   !>       lBoundI, uBoundI -- the upper and lower initialisation values
+   !>       lBound, uBound -- the upper and lower allowable values
+   !>       nPop -- the population size
+   !>       nGen -- the number of generations
+   !>       pCrossover -- the crossover probability
+   !>       pMutate1, pMutate2 -- the drift and total loss probabilities
+   !>       nPrint -- the number of iterations after which to print
+   !>
+   !>  @param[in]   fitnessFunc -- the function which tests the fitness
+   !>  @param[in]   nDims       -- the number of input parameters
+   !>  @param[in]   settings    -- the optimisation settings derived type
+   !>  @param[out]  xOpt        -- the optimised values for return
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine Optimise_GA(fitnessFunc, nDims, settings, xOpt)
+
+      ! Use the relevant optimiser module
+
+      use mod_optGA
+
+      ! Turn off implicit typing
+
+      implicit none
+
+      ! Declare external variables
+
+      procedure(optimiseFunction) :: fitnessFunc
+
+      integer(kind=WI), intent(in) :: nDims
+
+      type(optimisationSettings) :: settings
+
+      real   (kind=WP), intent(out) :: xOpt(nDims)
+
+      ! Unpack the options, and call the simulated annealing module
+
+      call opt_runGA(fitnessFunc, nDims, &
+                     settings%lBound, settings%uBound, &
+                     settings%lBoundI, settings%uBoundI, &
+                     settings%nPop, &
+                     settings%nGen, &
+                     settings%pCrossover, &
+                     settings%pMutate1, settings%pMutate2, settings%pMutate3, &
+                     settings%nPrint, &
+                     xOpt)
+
+      ! Return to calling program
+
+      return
+
+   end subroutine Optimise_GA
+
+   !*******************************************************************
+   !*******************************************************************
+
 
 
 end module mod_Optimisers

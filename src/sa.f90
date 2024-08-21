@@ -98,17 +98,16 @@ contains
 
       real   (kind=WP) :: xOpt(nDims)
 
-      ! Declare internal variables
-
       integer(kind=WI) :: outerMax     ! The number of outer iterations
       integer(kind=WI) :: innerMax     ! The number of inner iterations
       integer(kind=WI) :: nPrint       ! The print output timer
       integer(kind=WI) :: nReheat      ! The reheat frequency
 
-      
       integer(kind=WI), parameter :: nInitTest = 100    ! The number of initial tests to estimate T_0
 
       real   (kind=WP) :: alpha        ! The geometric annealing rate
+
+      ! Declare internal variables
 
       real   (kind=WP) :: xCurr(nDims), xBest(nDims), xI(nDims), xProp(nDims)
 
