@@ -49,6 +49,7 @@ program OptimusPrime
    ! Declare modules
 
    use precision
+   use mpi_f08
    use mod_Welcome
    use mod_UserFunctions
    use mod_Optimisers
