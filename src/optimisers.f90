@@ -71,12 +71,12 @@ module mod_Optimisers
 
       real   (kind=WP) :: pCrossover = 0.75_wp
 
-      real   (kind=WP) :: pMutate1 = 0.05_wp
-      real   (kind=WP) :: pMutate2 = 0.01_wp
-      real   (kind=WP) :: pMutate3 = 0.01_wp
+      real   (kind=WP) :: pMutate1 = 0.075_wp
+      real   (kind=WP) :: pMutate2 = 0.025_wp
+      real   (kind=WP) :: pMutate3 = 0.10_wp
 
-      integer(kind=WI) :: kTourney = 3
-      integer(kind=WI) :: kCross = 2
+      integer(kind=WI) :: kTourney = 2
+      integer(kind=WI) :: kCross = 1
 
       integer(kind=WI) :: nOffspring = 7
 

@@ -49,6 +49,7 @@ program OptimusPrime
    ! Declare modules
 
    use precision
+   use mod_Welcome
    use mod_UserFunctions
    use mod_Optimisers
 
@@ -62,6 +63,10 @@ program OptimusPrime
 
    type(optimisationSettings) :: optSettings
 
+   ! Say hello with a welcoming 80s-style screen
+
+   call WL_hello()
+
    ! Set up the key options
 
    optSettings%lBound = -4.0_wp
@@ -71,6 +76,8 @@ program OptimusPrime
    optSettings%uBoundI =  one
 
    optSettings%nGen = 100
+   optSettings%nPop = 1000
+
 !!$   optSettings%nOuter = 50
 !!$   optSettings%nReheat = 50
 
@@ -80,15 +87,18 @@ program OptimusPrime
 
    ! Run the code
 
-   call Optimise_GA(rosenbrock, nDims, optSettings, xFinal)
+   call Optimise_GA(polycos, nDims, optSettings, xFinal)
+
+   optSettings%nPop=100
+   optSettings%nOffspring=7
+
+   call Optimise_ES(polycos, nDims, optSettings, xFinal)
 
    write(6,*) xFinal
 
+   ! Say goodbye with a more modern, 2024 goodbye screen
    
-
-   ! Stop and exit cleanly
-
-   stop
+   call WL_goodbye()
 
 contains
 

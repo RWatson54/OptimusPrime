@@ -133,6 +133,10 @@ contains
 
       integer(kind=WI) :: lPar, rPar, lOff, rOff
 
+      ! Genetic algorithm says hello
+
+      call optHello(nGen, nPop, kCross, kTourney)
+
       ! Seed the random variables
       
       call STOCHASTIC_SeedInit(1)
@@ -177,8 +181,8 @@ contains
 
       ! Report initial performance
 
-      write(6,*) ' *** '
-      write(6,*) ' *** Initial Performance: ', MinErr, sum(PopulationPerformance) / real(nPop,WP)
+      write(6,*) ' ***                                    Minimum Error, Population Mean Error '
+      write(6,*) ' *** Initial Population Performance: ', MinErr, sum(PopulationPerformance) / real(nPop,WP)
       write(6,*) ' *** '
 
       ! Begin the main generation loop
@@ -214,6 +218,11 @@ contains
                               Population(:, lPar), Population(:, rPar), &
                               PopulationNew(:, lOff), PopulationNew(:, rOff))
 
+            else
+
+               PopulationNew(:,lOff) = Population(:,lPar)
+               PopulationNew(:,rOff) = Population(:,rPar)
+
             end if
 
          end do
@@ -226,7 +235,7 @@ contains
 
                if ( STOCHASTIC_Uniform(zero,one) .lt. pMutate1 ) then
 
-                  PopulationNew(iDim,iPop) = PopulationNew(iDim,iPop) + STOCHASTIC_Normal(zero,half)
+                  PopulationNew(iDim,iPop) = PopulationNew(iDim,iPop) + STOCHASTIC_Normal(zero,one)
 
                   PopulationNew(iDim,iPop) = min(PopulationNew(iDim,iPop), uBound)
                   PopulationNew(iDim,iPop) = max(PopulationNew(iDim,iPop), lBound)
@@ -269,6 +278,7 @@ contains
 
          end do
 
+
          ! Practice elitism by moving the best performer somewhere into the output generation
 
          PopulationNew(:, STOCHASTIC_Integer(1, nPop)) = BestIndividual(:, 1)
@@ -296,7 +306,7 @@ contains
 
          if ( mod(iGen, nPrint) .eq. 0 ) then
 
-            write(6,*) ' *** Performance: ', iGen, MinErr, sum(PopulationPerformance) / real(nPop,WP)
+            write(6,*) ' *** Generation: ', iGen, MinErr, sum(PopulationPerformance) / real(nPop,WP)
 
          end if
 
@@ -306,6 +316,9 @@ contains
 
       xOpt = BestIndividual(:,1)
 
+      ! Bid the user farewell
+
+      call optGoodbye()
 
    end subroutine opt_runGA
 
@@ -448,6 +461,98 @@ contains
       return
 
    end subroutine crossover
+
+   !*******************************************************************
+   !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine optHello()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Print some stuff about the optimisation process
+   !>  
+   !>  @param[in]  nGen -- the number of generations to be run
+   !>  @param[in]  nPop -- the size of the population
+   !>  @param[in]  kCross -- the number of crossover points
+   !>  @param[in]  kTourney -- the tournament selection choices
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine optHello(nGen, nPop, kCross, kTourney)
+
+      implicit none
+
+      ! Declare external variables
+
+      integer(kind=WI) :: nGen, nPop, kCross, kTourney
+
+      ! Print something helpful
+
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+      write(6,*) ' *** Preparing to optimise with a Genetic Algorithm. '
+      write(6,*) ' *** '
+      write(6,*) ' ***    Population size: ', nPop
+      write(6,*) ' ***    Number of generations: ', nGen
+      write(6,*) ' *** '
+      write(6,*) ' ***    Number of crossover points in recombination: ', kCross
+      write(6,*) ' *** '
+      write(6,*) ' ***    k-Way tournament selection: ', kTourney
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+
+      ! Return to calling program
+
+      return
+
+   end subroutine optHello
+
+   !*******************************************************************
+   !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine optGoodbye()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Print a friendly goodbye message
+   !>  
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine optGoodbye()
+
+      implicit none
+
+      ! Print something helpful
+
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+      write(6,*) ' *** Genetic Algorithm optimisation run completed. '
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+
+      ! Return to calling program
+
+      return
+
+   end subroutine optGoodbye
 
    !*******************************************************************
    !*******************************************************************

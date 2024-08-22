@@ -33,6 +33,7 @@ LFLAGS= -L$(LIB_DIR)
 
 # Set up the list of source code files
 EXEC_FILES = $(SRC_DIR)/precision.f90 \
+             $(SRC_DIR)/functional/hello.f90 \
              $(SRC_DIR)/functional/stochastic.f90 \
              $(SRC_DIR)/functional/ranking.f90 \
              $(SRC_DIR)/functional/interface.f90 \

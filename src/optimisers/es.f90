@@ -127,6 +127,10 @@ contains
 
       integer(kind=WI) :: iMu, iLambda, iDim, iGen
 
+      ! Evolutionary Strategy  says hello
+
+      call optHello(nGen, nMu, nOffspring)
+
       ! Seed the random variables
 
       call STOCHASTIC_SeedInit(1)
@@ -176,8 +180,8 @@ contains
 
       ! Report initial performance
 
-      write(6,*) ' *** '
-      write(6,*) ' *** Initial Performance: ', MinErr, sum(muPerformance) / real(nMu,WP)
+      write(6,*) ' ***                                    Minimum Error, Population Mean Error '
+      write(6,*) ' *** Initial Population Performance: ', MinErr, sum(muPerformance) / real(nMu,WP)
       write(6,*) ' *** '
 
       ! Main generation loop
@@ -290,7 +294,102 @@ contains
 
       deallocate(bestIndividual)
 
+      ! Bid the user farewell
+
+      call optGoodbye()
+
    end subroutine opt_runES
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine optHello()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Print some stuff about the optimisation process
+   !>  
+   !>  @param[in]  nGen -- the number of generations to be run
+   !>  @param[in]  nPop -- the size of the population
+   !>  @param[in]  nOffspring -- the number of offspring per population
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine optHello(nGen, nPop, nOffspring)
+
+      implicit none
+
+      ! Declare external variables
+
+      integer(kind=WI) :: nGen, nPop, nOffspring
+
+      ! Print something helpful
+
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+      write(6,*) ' *** Preparing to optimise with an Evolutionary Strategy. '
+      write(6,*) ' *** '
+      write(6,*) ' ***    Population size: ', nPop
+      write(6,*) ' ***    Number of generations: ', nGen
+      write(6,*) ' *** '
+      write(6,*) ' ***    Number of offspring: ', nOffspring
+      write(6,*) ' *** '
+      write(6,*) ' ***    Functional evaluation count: ', nOffspring*nPop
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+
+      ! Return to calling program
+
+      return
+
+   end subroutine optHello
+
+   !*******************************************************************
+   !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Subroutine optGoodbye()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  Print a friendly goodbye message
+   !>  
+   !*******************************************************************
+   !*******************************************************************
+
+   subroutine optGoodbye()
+
+      implicit none
+
+      ! Print something helpful
+
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' *** '
+      write(6,*) ' *** Evolutionary Strategy optimisation run completed. '
+      write(6,*) ' *** '
+      write(6,*) ' ******************************************************** '
+      write(6,*) ' ******************************************************** '
+
+      ! Return to calling program
+
+      return
+
+   end subroutine optGoodbye
+
+   !*******************************************************************
+   !*******************************************************************
 
 
 
