@@ -55,7 +55,7 @@ module mod_UserFunctions
 
    public :: nDims
 
-   public :: quadratic, polycos
+   public :: quadratic, polycos, ackley, beale, rosenbrock
 
 contains
 
@@ -138,6 +138,140 @@ contains
 
    !*******************************************************************
    !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Function Ackley()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  This is a simple demonstration --- the Ackley function
+   !>  
+   !>  @param[in]  x -- the input variables
+   !>  @param[out] f -- the output variables
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   function ackley(x) result(f)
+
+      implicit none
+
+      ! Declare external variables
+
+      real   (kind=WP), intent(in) :: x(:)
+      real   (kind=WP) :: f
+
+      ! And calculate the function
+      
+      f = -20.0_wp * exp(-0.2_wp * sqrt(0.5_wp * (x(1)**2 + x(2)**2))) &
+                   - exp(0.5_wp * (cos(2*pi*x(1)) + cos(2*pi*x(2)))) &
+                   + exp(one) + 20.0_wp
+
+      ! Return to calling program
+
+      return
+
+   end function ackley
+
+   !*******************************************************************
+   !*******************************************************************
+
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Function Beale()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  This is a simple demonstration --- the Beale function
+   !>  
+   !>  @param[in]  x -- the input variables
+   !>  @param[out] f -- the output variables
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   function beale(x) result(f)
+
+      implicit none
+
+      ! Declare external variables
+
+      real   (kind=WP), intent(in) :: x(:)
+      real   (kind=WP) :: f
+
+      ! And calculate the function
+      
+      f = (1.5_wp - x(1) + x(1)*x(2))**2 &
+        + (2.25_wp - x(1) + x(1)*x(2)*x(2))**2 &
+        + (2.625_wp - x(1) + x(1)*x(2)*x(2)*x(2))**2
+
+      ! Return to calling program
+
+      return
+
+   end function beale
+
+   !*******************************************************************
+   !*******************************************************************
+
+   !*******************************************************************
+   !*******************************************************************
+   !
+   !>  Function Rosenbrock()
+   !
+   !>  @author
+   !>  Rob Watson
+   !>
+   !>  @brief 
+   !>  This is a simple demonstration --- the Rosenbrock function
+   !>  
+   !>  @param[in]  x -- the input variables
+   !>  @param[out] f -- the output variables
+   !>
+   !*******************************************************************
+   !*******************************************************************
+
+   function rosenbrock(x) result(f)
+
+      implicit none
+
+      ! Declare external variables
+
+      real   (kind=WP), intent(in) :: x(:)
+      real   (kind=WP) :: f
+
+      ! Declare internal variables
+
+      integer(kind=WI) :: i
+
+      ! And calculate the function
+      
+      f = zero
+
+      do i = 1, 1
+
+         f = f + 100 * (x(i+1) - x(i)**2)**2 + (one - x(i))**2
+
+      end do
+         
+      ! Return to calling program
+
+      return
+
+   end function rosenbrock
+
+   !*******************************************************************
+   !*******************************************************************
+
+
 
 
 end module mod_UserFunctions

@@ -75,6 +75,8 @@ contains
    !>  @param[in]  pMutate1 -- the drift mutation probability
    !>  @param[in]  pMutate2 -- the point loss mutation probability
    !>  @param[in]  pMutate3 -- the total loss mutation probability
+   !>  @param[in]  kTourney -- the total loss mutation probability
+   !>  @param[in]  kCross -- the total loss mutation probability
    !>  @param[in]  nPrint -- the screen output frequency
    !>  @param[out] xOpt -- the returned values
    !>
@@ -85,6 +87,7 @@ contains
                         lBound, uBound, lBoundI, uBoundI, &
                         nPop, nGen, &
                         pCrossover, pMutate1, pMutate2, pMutate3, &
+                        kTourney, kCross, &
                         nPrint, &
                         xOpt)
 
@@ -106,9 +109,9 @@ contains
 
       real   (kind=WP) :: pCrossover, pMutate1, pMutate2, pMutate3
 
-      integer(kind=WI) :: kTourney = 3
+      integer(kind=WI) :: kTourney
 
-      integer(kind=WI) :: kCross = 2
+      integer(kind=WI) :: kCross
 
       ! Declare internal variables
 
@@ -291,7 +294,11 @@ contains
          
          ! Report the performance of the population
 
-         write(6,*) ' *** Performance: ', iGen, MinErr, sum(PopulationPerformance) / real(nPop,WP)
+         if ( mod(iGen, nPrint) .eq. 0 ) then
+
+            write(6,*) ' *** Performance: ', iGen, MinErr, sum(PopulationPerformance) / real(nPop,WP)
+
+         end if
 
       end do
 

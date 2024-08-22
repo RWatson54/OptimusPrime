@@ -1,6 +1,6 @@
 # Set up the project directory
-#PROJECT_DIR = /home/ttrw2/Source/FunctionPassingFortran
-PROJECT_DIR = /home/raw54/Source/OptimusPrime
+PROJECT_DIR = /home/ttrw2/Source/FunctionPassingFortran
+#PROJECT_DIR = /home/raw54/Source/OptimusPrime
 
 # Where to hide things
 BIN_DIR = $(PROJECT_DIR)/bin
@@ -12,13 +12,16 @@ INC_DIR = $(PROJECT_DIR)/include
 #CC=mpicc
 #FC=mpifort
 
+#CC=icc
+#FC=ifort
+
 CC=gcc
 FC=gfortran
 
 # Set the optimisation and error checking options
 #OPTIMISE =  -O3 
-#DEBUGGING = -O0 -CB -warn all -check all -gen-interfaces -check bounds -ftrapuv -debug full -fpe0 -traceback
-DEBUGGING = -O0 -fcheck=all
+#DEBUGGING = -pg -O0 -CB -warn all -check all -gen-interfaces -check bounds -ftrapuv -debug full -fpe0 -traceback
+DEBUGGING = -g3 -O0 -fcheck=all -ffpe-trap=invalid,zero,overflow -finit-integer=-2147483647 -finit-real=snan -fbacktrace -pedantic -Wall -fsignaling-nans -frounding-math -ffree-line-length-none
 INCLUDE = -I$(INC_DIR)
 
 # Bundle these together

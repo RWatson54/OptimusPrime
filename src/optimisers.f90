@@ -60,6 +60,9 @@ module mod_Optimisers
       integer(kind=WI) :: nReheat = 25
 
       integer(kind=WI) :: nGen = 10
+
+      ! Population sizes
+
       integer(kind=WI) :: nPop = 100
 
       ! Key parameters
@@ -71,6 +74,11 @@ module mod_Optimisers
       real   (kind=WP) :: pMutate1 = 0.05_wp
       real   (kind=WP) :: pMutate2 = 0.01_wp
       real   (kind=WP) :: pMutate3 = 0.01_wp
+
+      integer(kind=WI) :: kTourney = 3
+      integer(kind=WI) :: kCross = 2
+
+      integer(kind=WI) :: nOffspring = 7
 
       ! Output control
 
@@ -225,6 +233,7 @@ contains
                      settings%nGen, &
                      settings%pCrossover, &
                      settings%pMutate1, settings%pMutate2, settings%pMutate3, &
+                     settings%kTourney, settings%kCross, &
                      settings%nPrint, &
                      xOpt)
 
@@ -289,6 +298,7 @@ contains
       call opt_runES(fitnessFunc, nDims, &
                      settings%lBound, settings%uBound, &
                      settings%lBoundI, settings%uBoundI, &
+                     settings%nPop, settings%nGen, settings%nOffspring, &                     
                      settings%nPrint, &
                      xOpt)
 
