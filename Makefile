@@ -33,13 +33,13 @@ LFLAGS= -L$(LIB_DIR)
 
 # Set up the list of source code files
 EXEC_FILES = $(SRC_DIR)/precision.f90 \
-             $(SRC_DIR)/stochastic.f90 \
-             $(SRC_DIR)/ranking.f90 \
-             $(SRC_DIR)/interface.f90 \
+             $(SRC_DIR)/functional/stochastic.f90 \
+             $(SRC_DIR)/functional/ranking.f90 \
+             $(SRC_DIR)/functional/interface.f90 \
              $(SRC_DIR)/userfunctions.f90 \
-             $(SRC_DIR)/sa.f90 \
-             $(SRC_DIR)/ga.f90 \
-             $(SRC_DIR)/es.f90 \
+             $(SRC_DIR)/optimisers/sa.f90 \
+             $(SRC_DIR)/optimisers/ga.f90 \
+             $(SRC_DIR)/optimisers/es.f90 \
              $(SRC_DIR)/optimisers.f90 \
              $(SRC_DIR)/main.f90 
 
@@ -79,11 +79,15 @@ runOptimus.exe: $(OBJ_FILES)
 clean:
 	$(RM) *.o *.mod *~ *# fort.*
 	${RM} $(SRC_DIR)/*.o $(SRC_DIR)/*~ $(SRC_DIR)/*.mod $(SRC_DIR)/*#
+	${RM} $(SRC_DIR)/optimisers/*.o $(SRC_DIR)/optimisers/*~ $(SRC_DIR)/optimisers/*.mod $(SRC_DIR)/optimisers/*#
+	${RM} $(SRC_DIR)/functional/*.o $(SRC_DIR)/functional/*~ $(SRC_DIR)/functional/*.mod $(SRC_DIR)/functional/*#
 	${RM} ${INC_DIR}/*.mod
 
 cleanall:
 	$(RM) *.o *.mod *~ *# fort.*
 	${RM} $(SRC_DIR)/*.o $(SRC_DIR)/*~ $(SRC_DIR)/*.mod $(SRC_DIR)/*#
+	${RM} $(SRC_DIR)/optimisers/*.o $(SRC_DIR)/optimisers/*~ $(SRC_DIR)/optimisers/*.mod $(SRC_DIR)/optimisers/*#
+	${RM} $(SRC_DIR)/functional/*.o $(SRC_DIR)/functional/*~ $(SRC_DIR)/functional/*.mod $(SRC_DIR)/functional/*#
 	${RM} ${INC_DIR}/*.mod
 	${RM} ${BIN_DIR}/*.exe
 
